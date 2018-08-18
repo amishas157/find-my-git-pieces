@@ -1,0 +1,11 @@
+{
+  "name": "find-my-git-pieces",
+  "version": "1.0.0",
+  "description": "A project to help you find all the repos in an org where you contributed",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "amishas157",
+  "license": "ISC"
+}
