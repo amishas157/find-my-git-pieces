@@ -9,8 +9,8 @@
   "author": "amishas157",
   "license": "ISC",
   "dependencies": {
+    "async-await-parallel": "^1.0.0",
     "commander": "^2.17.1",
-    "p-iteration": "^1.1.7",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
   }

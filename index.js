@@ -2,7 +2,7 @@
 
 const program = require('commander');
 const rp = require('request-promise');
-const { forEach } = require('p-iteration')
+const parallel = require('async-await-parallel')
 
 const GITHUB_BASE_URL = 'https://api.github.com';
 const PAGE_SIZE = 30;
@@ -43,7 +43,7 @@ const reqRepoContributors = async (orgName, repoName) => {
       uri: `${GITHUB_BASE_URL}/repos/${orgName}/${repoName}/contributors`,
       qs: {
           access_token: process.env.GithubToken,
-          type: 'public'
+          type: 'private'
       },
       headers: {
           'User-Agent': 'Request-Promise'
@@ -80,21 +80,17 @@ const findRepos = async (orgName) => {
 
 const findUserContributedRepos = async (repos, username, orgName) => {
   let userRepos = [];
-  let contributorsLists = [];
-
-  await forEach(repos, async (repo) => {
-    const list = await reqRepoContributors(orgName, repo.name);
-    contributorsLists.push(list);
-    console.log(contributorsLists.length);
-  });
+  const contributorsLists = await parallel(repos.map((repo) => reqRepoContributors.bind(null, orgName, repo.name)), 5);
 
   for (let [index, contributors] of contributorsLists.entries()) {
-    const isUserContributor = contributors.filter((contributor) => contributor.login === username).length > 0;
-    console.log(isUserContributor);
-    if (isUserContributor) {
-      userRepos.push(repos[index].name);
+    if (contributors && contributors.length) {
+      const isUserContributor = contributors.filter((contributor) => contributor.login === username).length > 0;
+      if (isUserContributor) {
+        userRepos.push(repos[index].name);
+      }      
     }
   }
+
   return userRepos;
 }
 
