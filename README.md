@@ -18,6 +18,9 @@ To get contributions in public or private repositories exclusively, you can pass
 You would need to export an Environment variable `GithubToken` which is basically a personal access token and has full `repo` scope.
 `export GithubToken=123xxxxxxx`
 
-##### Output
+#### Output
 
 The output will be printed on console as an array of repo names
+
+### PS
+You would need to be patient since it can be quite slow dependent on number of repositories in an organisation
