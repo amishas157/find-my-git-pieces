@@ -11,6 +11,8 @@ program
   .description('Finds all the repos in an organization you have contributed to')
   .option('--org-name <s>')
   .option('--username <s>')
+  .option('--public')
+  .option('--private')
   .parse(process.argv);
 
 function checkTokenExported() {
@@ -21,11 +23,12 @@ function checkTokenExported() {
 }
 
 const reqOrgRepos = async (orgName, page) => {
+  const type = program.public ? 'public' : program.private ? 'private' : 'all';
   const options = {
       uri: `${GITHUB_BASE_URL}/orgs/${orgName}/repos`,
       qs: {
           access_token: process.env.GithubToken,
-          type: 'public',
+          type: type,
           page: page
       },
       headers: {
